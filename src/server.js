@@ -11,6 +11,7 @@ const port = process.env.PORT;
 app.use(express.json());
 app.use("/api/auth", authRoutes)
 app.use("/api", testRoutes)
+
 app.get("/", (req, res) => {
   res.send("Backend API running");
 });
