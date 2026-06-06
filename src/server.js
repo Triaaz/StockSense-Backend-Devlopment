@@ -5,6 +5,7 @@ const supplierRoutes = require("./routes/supplierRoutes")
 const purchaseOrderRoutes = require("./routes/purchaseOrderRoutes")
 const productRoutes = require("./routes/productRoutes")
 const businessProfileRoutes = require("./routes/businessProfileRoutes")
+const alertRoutes = require("./routes/alertRoutes")
 const connectDB = require("./config/db")
 
 require("dotenv").config();
@@ -18,7 +19,8 @@ app.use("/api", testRoutes)
 app.use("/api/suppliers", supplierRoutes)
 app.use("/api/purchase-orders", purchaseOrderRoutes)
 app.use("/api/products", productRoutes)
-app.use("/api/profile", businessProfileRoutes);
+app.use("/api/profile", businessProfileRoutes)
+app.use("/api/alerts", alertRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend API running");
