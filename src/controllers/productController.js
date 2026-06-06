@@ -1,5 +1,12 @@
 const Product = require("../models/product");
-const stockMovementModel = require("../models/stockMovementModel");
+
+// STOCK HISTORY MODEL SAFETY
+let stockMovementModel;
+try {
+  stockMovementModel = require("../models/stockMovementModel");
+} catch (err) {
+  stockMovementModel = null;
+}
 
 // CREATE PRODUCT
 const createProduct = async (req, res) => {
@@ -64,7 +71,9 @@ const getAllProducts = async (req, res) => {
       };
     }
 
-    const products = await Product.find(filter).populate("category supplierLink");
+    const products = await Product.find(filter).populate(
+      "category supplierLink"
+    );
 
     return res.status(200).json({
       message: "Products fetched successfully",
@@ -81,8 +90,9 @@ const getAllProducts = async (req, res) => {
 // GET ONE PRODUCT
 const getOneProduct = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id)
-      .populate("category supplierLink");
+    const product = await Product.findById(req.params.id).populate(
+      "category supplierLink"
+    );
 
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
@@ -175,6 +185,12 @@ const lowStockProduct = async (req, res) => {
 // STOCK HISTORY
 const stockHistory = async (req, res) => {
   try {
+    if (!stockMovementModel) {
+      return res.status(501).json({
+        message: "Stock movement module not available"
+      });
+    }
+
     const movement = await stockMovementModel.find({
       product: req.params.id
     });
