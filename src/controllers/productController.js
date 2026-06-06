@@ -1,5 +1,5 @@
 const Product = require("../models/product");
-const stockMovementModel = require("../models/stockMovementModel");
+const stockMovementModel = require("../models/inventoryHistory");
 
 // CREATE
 const createProduct = async (req, res) => {

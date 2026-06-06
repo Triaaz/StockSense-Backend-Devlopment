@@ -16,10 +16,9 @@ const stockIn = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-   const previousStock = product.currentStock ?? product.quantity;
+   const previousStock = product.currentStock;
 
-product.currentStock =
-  (product.currentStock ?? product.quantity) + quantity;
+product.currentStock += quantity;
 
 await product.save();
 
@@ -63,11 +62,11 @@ const stockOut = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    if (product.quantity < quantity) {
+    if (product.currentStock < quantity) {
       return res.status(400).json({ message: "Insufficient stock available" });
     }
 
-      const previousStock = product.currentStock ?? product.quantity;
+      const previousStock = product.currentStock;
 
 if (previousStock < quantity) {
   return res.status(400).json({ message: "Insufficient stock available" });
@@ -118,7 +117,7 @@ const updateInventory = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    const previousStock = product.currentStock ?? product.quantity;
+    const previousStock = product.currentStock;
 
 product.currentStock = newQuantity;
 
