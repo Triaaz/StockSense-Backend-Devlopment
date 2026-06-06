@@ -2,6 +2,9 @@ const express = require("express");
 const authRoutes = require("./routes/authRoutes")
 const testRoutes = require("./routes/testRoutes")
 const supplierRoutes = require("./routes/supplierRoutes")
+const purchaseOrderRoutes = require("./routes/purchaseOrderRoutes")
+const productRoutes = require("./routes/productRoutes")
+const businessProfileRoutes = require("./routes/businessProfileRoutes")
 const connectDB = require("./config/db")
 const inventoryRoutes = require("./routes/inventoryRoutes");
 
@@ -15,6 +18,9 @@ app.use("/api/auth", authRoutes)
 app.use("/api", testRoutes)
 app.use("/api/inventory", inventoryRoutes);
 app.use("/api/suppliers", supplierRoutes)
+app.use("/api/purchase-orders", purchaseOrderRoutes)
+app.use("/api/products", productRoutes)
+app.use("/api/profile", businessProfileRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend API running");
