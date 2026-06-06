@@ -2,8 +2,16 @@ const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
-    description: { type: String },
+    name: {
+      type: String,
+      required: true,
+      trim: true
+    },
+
+    description: {
+      type: String,
+      default: ""
+    },
 
     category: {
       type: mongoose.Schema.Types.ObjectId,
@@ -11,28 +19,66 @@ const productSchema = new mongoose.Schema(
       required: true
     },
 
-    costPrice: { type: Number, required: true },
-    sellingPrice: { type: Number, required: true },
-
-    openingStock: { type: Number, required: true },
-
-    currentStock: { type: Number, default: 0 },
-
-    reorderLevel: { type: Number, default: 5 },
-
-    unitOfMeasure: { type: String },
-    expiryDate: { type: Date },
-
     supplierLink: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Supplier",
       default: null
     },
 
-    deletedAt: { type: Date, default: null },
-    isActive: { type: Boolean, default: true },
+    costPrice: {
+      type: Number,
+      required: true,
+      min: 0
+    },
 
-    sku: { type: String }
+    sellingPrice: {
+      type: Number,
+      required: true,
+      min: 0
+    },
+
+    openingStock: {
+      type: Number,
+      required: true,
+      min: 0
+    },
+
+    currentStock: {
+      type: Number,
+      default: 0,
+      min: 0
+    },
+
+    reorderLevel: {
+      type: Number,
+      default: 5,
+      min: 0
+    },
+
+    unitOfMeasure: {
+      type: String,
+      default: "pcs"
+    },
+
+    expiryDate: {
+      type: Date
+    },
+
+    sku: {
+      type: String,
+      unique: true,
+      sparse: true
+    },
+
+    isActive: {
+      type: Boolean,
+      default: true
+    },
+
+    deletedAt: {
+      type: Date,
+      default: null
+    }
   },
   { timestamps: true }
 );
