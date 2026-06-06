@@ -7,6 +7,9 @@ const createCategory = async (req,res)=> {
         const category = await categoryModel.create({name});
         return res.status(201).json({message : 'category created', data : category})
     }catch (error){
+        if(error.name === 'ValidationError'){
+            return res.status(400).json({message : 'Validation error', error : error.message})
+        }
         return res.status(500).json({message : 'Error creating category', error : error.message})
     }
 };
@@ -49,6 +52,9 @@ const updateCategory = async(req,res)=>{
         }
         return res.status(200).json({message : 'Category updated', data : category})
     }catch(error){
+        if(error.name === 'ValidationError'){
+            return res.status(400).json({message : 'Validation error', error : error.message})
+        }
         return res.status(500).json({message : 'Error updating category', error : error.message})
     }
 };
