@@ -1,43 +1,12 @@
 const Product = require("../models/product");
+const stockMovementModel = require("../models/stockMovementModel");
 
-// STOCK HISTORY MODEL SAFETY
-let stockMovementModel;
-try {
-  stockMovementModel = require("../models/stockMovementModel");
-} catch (err) {
-  stockMovementModel = null;
-}
-
-// CREATE PRODUCT
+// CREATE
 const createProduct = async (req, res) => {
   try {
-    const {
-      name,
-      description,
-      category,
-      costPrice,
-      sellingPrice,
-      openingStock,
-      reorderLevel,
-      unitOfMeasure,
-      expiryDate,
-      supplierLink,
-      sku
-    } = req.body;
-
     const product = await Product.create({
-      name,
-      description,
-      category,
-      costPrice,
-      sellingPrice,
-      openingStock,
-      currentStock: openingStock,
-      reorderLevel,
-      unitOfMeasure,
-      expiryDate,
-      supplierLink,
-      sku
+      ...req.body,
+      currentStock: req.body.openingStock
     });
 
     return res.status(201).json({
@@ -52,7 +21,7 @@ const createProduct = async (req, res) => {
   }
 };
 
-// GET ALL PRODUCTS
+// GET ALL
 const getAllProducts = async (req, res) => {
   try {
     const { category, lowStock, name } = req.query;
@@ -76,7 +45,7 @@ const getAllProducts = async (req, res) => {
     );
 
     return res.status(200).json({
-      message: "Products fetched successfully",
+      message: "Products fetched",
       data: products
     });
   } catch (error) {
@@ -87,7 +56,7 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-// GET ONE PRODUCT
+// GET ONE
 const getOneProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id).populate(
@@ -98,9 +67,7 @@ const getOneProduct = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    return res.status(200).json({
-      data: product
-    });
+    return res.status(200).json({ data: product });
   } catch (error) {
     return res.status(500).json({
       message: "Error fetching product",
@@ -109,7 +76,7 @@ const getOneProduct = async (req, res) => {
   }
 };
 
-// UPDATE PRODUCT
+// UPDATE
 const updateProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndUpdate(
@@ -123,7 +90,7 @@ const updateProduct = async (req, res) => {
     }
 
     return res.status(200).json({
-      message: "Product updated successfully",
+      message: "Product updated",
       data: product
     });
   } catch (error) {
@@ -134,15 +101,12 @@ const updateProduct = async (req, res) => {
   }
 };
 
-// DELETE PRODUCT (SOFT DELETE)
+// DELETE (SOFT)
 const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndUpdate(
       req.params.id,
-      {
-        deletedAt: new Date(),
-        isActive: false
-      },
+      { deletedAt: new Date(), isActive: false },
       { new: true }
     );
 
@@ -151,7 +115,7 @@ const deleteProduct = async (req, res) => {
     }
 
     return res.status(200).json({
-      message: "Product deleted successfully"
+      message: "Product deleted"
     });
   } catch (error) {
     return res.status(500).json({
@@ -161,13 +125,11 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-// LOW STOCK PRODUCTS
+// LOW STOCK
 const lowStockProduct = async (req, res) => {
   try {
     const products = await Product.find({
-      $expr: {
-        $lte: ["$currentStock", "$reorderLevel"]
-      }
+      $expr: { $lte: ["$currentStock", "$reorderLevel"] }
     });
 
     return res.status(200).json({
@@ -176,7 +138,7 @@ const lowStockProduct = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({
-      message: "Error fetching low stock products",
+      message: "Error fetching low stock",
       error: error.message
     });
   }
@@ -185,12 +147,6 @@ const lowStockProduct = async (req, res) => {
 // STOCK HISTORY
 const stockHistory = async (req, res) => {
   try {
-    if (!stockMovementModel) {
-      return res.status(501).json({
-        message: "Stock movement module not available"
-      });
-    }
-
     const movement = await stockMovementModel.find({
       product: req.params.id
     });
@@ -201,7 +157,7 @@ const stockHistory = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({
-      message: "Error fetching stock history",
+      message: "Error fetching history",
       error: error.message
     });
   }

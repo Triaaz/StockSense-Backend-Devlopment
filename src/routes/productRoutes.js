@@ -13,6 +13,7 @@ const {
 
 router.post("/", createProduct);
 router.get("/", getAllProducts);
+
 router.get("/low-stock", lowStockProduct);
 
 router.get("/:id", getOneProduct);
