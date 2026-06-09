@@ -11,6 +11,7 @@ const purchaseOrderRoutes = require("./routes/purchaseOrderRoutes");
 const productRoutes = require("./routes/productRoutes");
 const businessProfileRoutes = require("./routes/businessProfileRoutes");
 const inventoryRoutes = require("./routes/inventoryRoutes");
+const auditLogRoutes = require("./routes/auditLogRoutes")
 
 connectDB();
 
@@ -29,6 +30,7 @@ app.use("/api/suppliers", supplierRoutes);
 app.use("/api/purchase-orders", purchaseOrderRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/profile", businessProfileRoutes);
+app.use("/api/audit-logs", auditLogRoutes)
 
 app.get("/", (req, res) => {
   res.send("Backend API running");
