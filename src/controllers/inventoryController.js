@@ -109,8 +109,6 @@ const stockOut = async (req, res) => {
   }
 };
 
-module.exports = { stockOut };
-
 // UPDATE INVENTORY 
 
 const updateInventory = async (req, res) => {
