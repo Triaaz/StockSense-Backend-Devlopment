@@ -11,7 +11,11 @@ const purchaseOrderRoutes = require("./routes/purchaseOrderRoutes");
 const productRoutes = require("./routes/productRoutes");
 const businessProfileRoutes = require("./routes/businessProfileRoutes");
 const inventoryRoutes = require("./routes/inventoryRoutes");
-const auditLogRoutes = require("./routes/auditLogRoutes")
+const alertRoutes = require("./routes/alertRoutes");
+const categoryRoutes = require("./routes/categoryRoutes");
+const salesRoutes = require("./routes/salesRoutes");
+const reportRoutes = require("./routes/reportRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 connectDB();
 
@@ -23,14 +27,16 @@ app.use(express.json());
 // core routes
 app.use("/api/auth", authRoutes);
 app.use("/api", testRoutes);
-
-// modules
-app.use("/api/inventory", inventoryRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/suppliers", supplierRoutes);
 app.use("/api/purchase-orders", purchaseOrderRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/profile", businessProfileRoutes);
-app.use("/api/audit-logs", auditLogRoutes)
+app.use("/api/inventory", inventoryRoutes);
+app.use("/api/alerts", alertRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/api/sales", salesRoutes);
+app.use("/api/reports", reportRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend API running");
