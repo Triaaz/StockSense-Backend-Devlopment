@@ -19,6 +19,16 @@ const userSchema = new mongoose.Schema({
         type: String,
         select: false, //hidden by default when fetching user data
     },
+    pin: {
+        type: String,
+        select: false
+    },
+    otp: String,
+    otpExpires: Date,
+    phoneVerified: {
+        type: Boolean,
+        default: false
+    },
     role: {
         type: String,
         enum: ["owner", "manager", "attendant"],
