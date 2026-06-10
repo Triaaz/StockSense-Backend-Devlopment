@@ -16,10 +16,9 @@ const stockIn = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-   const previousStock = product.currentStock ?? product.quantity;
+   const previousStock = product.currentStock;
 
-product.currentStock =
-  (product.currentStock ?? product.quantity) + quantity;
+product.currentStock += quantity;
 
 await product.save();
 
@@ -51,42 +50,50 @@ await InventoryHistory.create({
 
 const stockOut = async (req, res) => {
   try {
-    const { productId, quantity } = req.body;
+    const { productId, quantity, reason } = req.body;
 
+    // 1. Validate input
     if (!productId || !quantity) {
       return res.status(400).json({ message: "Missing fields" });
     }
 
-    const product = await Product.findById(productId);
+    if (quantity <= 0) {
+      return res.status(400).json({ message: "Quantity must be greater than 0" });
+    }
 
+    // 2. Atomic stock reduction (prevents race conditions)
+    const product = await Product.findOneAndUpdate(
+      {
+        _id: productId,
+        currentStock: { $gte: quantity }
+      },
+      {
+        $inc: { currentStock: -quantity }
+      },
+      { new: true }
+    );
+
+    // 3. If update failed → insufficient stock OR invalid product
     if (!product) {
-      return res.status(404).json({ message: "Product not found" });
+      return res.status(400).json({
+        message: "Insufficient stock available or product not found"
+      });
     }
 
-    if (product.quantity < quantity) {
-      return res.status(400).json({ message: "Insufficient stock available" });
-    }
+    // 4. Calculate previous stock safely
+    const previousStock = product.currentStock + quantity;
 
-      const previousStock = product.currentStock ?? product.quantity;
+    // 5. Log inventory history
+    await InventoryHistory.create({
+      product: productId,
+      type: "OUT",
+      quantity,
+      previousStock,
+      newStock: product.currentStock,
+      reason: reason || "Stock Out"
+    });
 
-if (previousStock < quantity) {
-  return res.status(400).json({ message: "Insufficient stock available" });
-}
-
-product.currentStock =
-  previousStock - quantity;
-
-await product.save();
-
-await InventoryHistory.create({
-  product: productId,
-  type: "OUT",
-  quantity,
-  previousStock,
-  newStock: product.currentStock, // FIXED
-  reason: "Stock Out"
-});
-
+    // 6. Response
     return res.status(200).json({
       message: "Stock removed successfully",
       product,
@@ -118,7 +125,7 @@ const updateInventory = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    const previousStock = product.currentStock ?? product.quantity;
+    const previousStock = product.currentStock;
 
 product.currentStock = newQuantity;
 
