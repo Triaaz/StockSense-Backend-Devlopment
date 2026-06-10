@@ -14,6 +14,7 @@ const inventoryRoutes = require("./routes/inventoryRoutes");
 const alertRoutes = require("./routes/alertRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const salesRoutes = require("./routes/salesRoutes");
+const reportRoutes = require("./routes/reportRoutes");
 
 connectDB();
 
@@ -35,6 +36,7 @@ app.use("/api/profile", businessProfileRoutes);
 app.use("/api/alerts", alertRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/sales", salesRoutes);
+app.use("/api/reports", reportRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend API running");
