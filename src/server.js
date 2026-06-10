@@ -15,6 +15,7 @@ const alertRoutes = require("./routes/alertRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const salesRoutes = require("./routes/salesRoutes");
 const reportRoutes = require("./routes/reportRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 connectDB();
 
@@ -26,13 +27,12 @@ app.use(express.json());
 // core routes
 app.use("/api/auth", authRoutes);
 app.use("/api", testRoutes);
-
-// modules
-app.use("/api/inventory", inventoryRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/suppliers", supplierRoutes);
 app.use("/api/purchase-orders", purchaseOrderRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/profile", businessProfileRoutes);
+app.use("/api/inventory", inventoryRoutes);
 app.use("/api/alerts", alertRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/sales", salesRoutes);
