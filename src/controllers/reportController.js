@@ -1,6 +1,6 @@
-const SupplierModel = require("../models/Supplier");
-const ProductModel = require("../models/Product");
-const PurchaseOrderModel = require("../models/PurchaseOrder");
+const SupplierModel = require("../models/supplier");
+const ProductModel = require("../models/product");
+const PurchaseOrderModel = require("../models/purchaseOrder");
 const AlertModel = require("../models/Alert");
 
 // Dashboard summary
