@@ -1,6 +1,5 @@
 const express = require("express");
 require("dotenv").config();
-
 const connectDB = require("./config/db");
 const cors = require("cors");
 
@@ -18,16 +17,13 @@ const salesRoutes = require("./routes/salesRoutes");
 const reportRoutes = require("./routes/reportRoutes");
 const userRoutes = require("./routes/userRoutes");
 
-connectDB();
-
-
 const app = express();
-const port = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(cors());
 
-// core routes
+// routes
 app.use("/api/auth", authRoutes);
 app.use("/api", testRoutes);
 app.use("/api/users", userRoutes);
@@ -42,9 +38,15 @@ app.use("/api/sales", salesRoutes);
 app.use("/api/reports", reportRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Backend API running");
+    res.send("Backend API running");
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+const startServer = async () => {
+    await connectDB();
+
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+};
+
+startServer();
