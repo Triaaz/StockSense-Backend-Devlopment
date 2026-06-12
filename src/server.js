@@ -6,6 +6,7 @@ const connectDB = require("./config/db");
 
 // routes
 const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
 const testRoutes = require("./routes/testRoutes");
 const supplierRoutes = require("./routes/supplierRoutes");
 const purchaseOrderRoutes = require("./routes/purchaseOrderRoutes");
@@ -25,6 +26,7 @@ app.use(express.json());
 
 // core routes
 app.use("/api/auth", authRoutes);
+
 app.use("/api", testRoutes);
 
 // modules
@@ -36,6 +38,7 @@ app.use("/api/profile", businessProfileRoutes);
 app.use("/api/alerts", alertRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/sales", salesRoutes);
+app.use("/api/users", userRoutes);
 
 app.get("/", (req, res) => {
   res.send("Backend API running");
