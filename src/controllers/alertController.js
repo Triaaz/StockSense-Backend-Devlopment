@@ -1,5 +1,5 @@
 const AlertModel = require("../models/Alert");
-const ProductModel = require("../models/Product");
+const ProductModel = require("../models/product");
 const BusinessProfileModel = require("../models/BusinessProfile");
 
 // LOW STOCK CHECK

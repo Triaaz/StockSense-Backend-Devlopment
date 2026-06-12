@@ -1,10 +1,10 @@
 const express = require("express");
-const cors = require('cors')
+const cors = require("cors");
 require("dotenv").config();
 
 const connectDB = require("./config/db");
 
-// routes
+// Routes
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const testRoutes = require("./routes/testRoutes");
@@ -16,35 +16,45 @@ const inventoryRoutes = require("./routes/inventoryRoutes");
 const alertRoutes = require("./routes/alertRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const salesRoutes = require("./routes/salesRoutes");
-
-connectDB();
+const reportRoutes = require("./routes/reportRoutes");
 
 const app = express();
-const port = process.env.PORT;
+const PORT = process.env.PORT || 5000;
+
+// Middleware
 app.use(cors());
-app.options('*', cors()) 
 app.use(express.json());
 
-// core routes
+// Routes
 app.use("/api/auth", authRoutes);
-
 app.use("/api", testRoutes);
-
-// modules
-app.use("/api/inventory", inventoryRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/suppliers", supplierRoutes);
 app.use("/api/purchase-orders", purchaseOrderRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/profile", businessProfileRoutes);
+app.use("/api/inventory", inventoryRoutes);
 app.use("/api/alerts", alertRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/sales", salesRoutes);
-app.use("/api/users", userRoutes);
+app.use("/api/reports", reportRoutes);
 
+// Health check
 app.get("/", (req, res) => {
-  res.send("Backend API running");
+    res.send("Backend API running");
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+// Start server
+const startServer = async () => {
+    try {
+        await connectDB();
+
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+    } catch (error) {
+        console.error("Failed to start server:", error);
+    }
+};
+
+startServer();
