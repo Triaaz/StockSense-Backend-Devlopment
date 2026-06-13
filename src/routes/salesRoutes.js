@@ -10,7 +10,7 @@ const {
 } = require("../controllers/salesController");
 
 router.post("/", recordSale);
-router.get("/", getSalesHistory);
+router.get("/history", getSalesHistory);
 router.patch("/:saleId/void", voidSale);
 router.get("/summary/daily", dailySalesSummary);
 router.get("/attendant/:attendantId", getAttendantSales);

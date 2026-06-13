@@ -1,6 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const { checkLowStock, checkExpiry, getAlerts, markAsRead, deleteAlert, getAlertSummary, markAllAsRead } = require("../controllers/alertController");
+
+const {
+  checkLowStock,
+  checkExpiry,
+  getAlerts,
+  markAsRead,
+  deleteAlert,
+  getAlertSummary,
+  markAllAsRead
+} = require("../controllers/alertController");
 
 router.post("/check", checkLowStock);
 router.post("/check-expiry", checkExpiry);

@@ -9,7 +9,7 @@ const inventoryHistorySchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["IN", "OUT", "ADJUSTMENT"],
+      enum: ["IN", "OUT", "ADJUSTMENT", "RECONCILIATION"],
       required: true
     },
     quantity: {
