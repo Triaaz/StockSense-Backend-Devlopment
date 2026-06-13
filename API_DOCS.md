@@ -152,6 +152,7 @@ POST | /inventory/stock-in | Add stock
 POST | /inventory/stock-out | Remove stock
 PUT | /inventory/update | Update inventory quantity
 GET | /inventory/history | Get inventory history
+POST |/inventory/reconcile | Reconcile system stock with physical stock count
 
 Stock In Body:
 {
